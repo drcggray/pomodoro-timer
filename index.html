@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pomodoro Timer</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Settings Button -->
+        <div class="settings-container">
+            <button class="settings-btn" id="settingsBtn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                </svg>
+            </button>
+        </div>
+        <!-- Timer Mode Selection -->
+        <div class="mode-container">
+            <button class="mode-btn active" data-mode="pomodoro">Pomodoro</button>
+            <button class="mode-btn" data-mode="shortBreak">Short Break</button>
+            <button class="mode-btn" data-mode="longBreak">Long Break</button>
+        </div>
+
+        <!-- Timer Display -->
+        <div class="timer-container">
+            <div class="timer-display">25:00</div>
+            <button class="timer-btn" id="startBtn">START</button>
+            <button class="timer-btn" id="resetBtn">RESET</button>
+        </div>
+
+        <!-- Session Counter -->
+        <div class="session-container">
+            <p>Sessions completed: <span id="sessionCount">0</span></p>
+        </div>
+
+        <!-- Tasks Section -->
+        <div class="tasks-section">
+            <h2>Tasks</h2>
+            <div class="task-actions">
+                <button class="task-action-btn" id="clearFinishedBtn">Clear finished tasks</button>
+                <button class="task-action-btn" id="clearAllBtn">Clear all tasks</button>
+            </div>
+            <div class="tasks-list" id="tasksList">
+                <!-- Tasks will be added here dynamically -->
+            </div>
+            <button class="add-task-btn" id="addTaskBtn">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                    <path d="M8 0a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2H9v6a1 1 0 1 1-2 0V9H1a1 1 0 0 1 0-2h6V1a1 1 0 0 1 1-1z"/>
+                </svg>
+                Add Task
+            </button>
+        </div>
+    </div>
+
+    <!-- Task Modal -->
+    <div class="modal" id="taskModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add Task</h2>
+                <button class="close-btn" id="closeTaskBtn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="task-input-section">
+                    <input type="text" id="taskInput" placeholder="What are you working on?">
+                    <div class="pomodoro-estimate">
+                        <label>Est Pomodoros</label>
+                        <div class="estimate-controls">
+                            <button class="estimate-btn" id="decreaseEstimate">-</button>
+                            <input type="number" id="pomodoroEstimate" min="1" value="1">
+                            <button class="estimate-btn" id="increaseEstimate">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="cancel-btn" id="cancelTaskBtn">Cancel</button>
+                <button class="save-btn" id="saveTaskBtn">Save</button>
+            </div>
+        </div>
+    </div>
+    <!-- Settings Modal -->
+    <div class="modal" id="settingsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Settings</h2>
+                <button class="close-btn" id="closeSettingsBtn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="settings-section">
+                    <h3>Timer (minutes)</h3>
+                    <div class="time-settings">
+                        <div class="time-input">
+                            <label for="pomodoroTime">Pomodoro</label>
+                            <input type="number" id="pomodoroTime" min="1" max="60" value="25">
+                        </div>
+                        <div class="time-input">
+                            <label for="shortBreakTime">Short Break</label>
+                            <input type="number" id="shortBreakTime" min="1" max="30" value="5">
+                        </div>
+                        <div class="time-input">
+                            <label for="longBreakTime">Long Break</label>
+                            <input type="number" id="longBreakTime" min="1" max="60" value="15">
+                        </div>
+                    </div>
+                </div>
+                <div class="settings-section">
+                    <h3>Auto Start Breaks</h3>
+                    <div class="setting-row">
+                        <label class="switch">
+                            <input type="checkbox" id="autoStartBreaks">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="settings-section">
+                    <h3>Long Break Interval</h3>
+                    <div class="setting-row">
+                        <input type="number" id="longBreakInterval" min="1" max="10" value="4">
+                        <span class="help-text">pomodoros</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="save-btn" id="saveSettingsBtn">Save Settings</button>
+            </div>
+        </div>
+    </div>
+    <script src="timer.js"></script>
+</body>
+</html>
